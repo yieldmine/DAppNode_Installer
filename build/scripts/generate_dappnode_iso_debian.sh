@@ -26,7 +26,7 @@ echo "Done!"
 
 echo "Clean old files..."
 rm -rf dappnode-isoº
-rm -rf DappNode-debian-*
+rm -rf YieldMine-debian-*
 
 echo "Extracting the iso..."
 xorriso -osirrox on -indev /images/${ISO_NAME} \
@@ -75,7 +75,7 @@ cd -
 mv /tmp/makeinitrd/initrd.gz ./initrd.gz
 cd ..
 
-echo "Configuring the boot menu for DappNode..."
+echo "Configuring the boot menu for YieldMine..."
 cp ../boot/grub.cfg boot/grub/grub.cfg
 cp ../boot/theme_1 boot/grub/theme/1
 cp ../boot/isolinux.cfg isolinux/isolinux.cfg
@@ -90,4 +90,4 @@ echo "Generating new iso..."
 xorriso -as mkisofs -isohybrid-mbr isolinux/isohdpfx.bin \
     -c isolinux/boot.cat -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 \
     -boot-info-table -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot \
-    -isohybrid-gpt-basdat -o /images/DAppNode-debian-bullseye-amd64.iso .
+    -isohybrid-gpt-basdat -o /images/YieldMine-debian-bullseye-amd64.iso .

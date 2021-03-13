@@ -26,7 +26,7 @@ cat > /tmp/ip.template <<'!EOF!'
 Template: ip-question/ask
 Type: string
 Description: If your public IP is dynamic, or you don't know, leave this field blank and continue.
- DAppNode needs to know the public IP of your node.
+ YieldMine needs to know the public IP of your node.
 
 Template: ip-question/title
 Type: text

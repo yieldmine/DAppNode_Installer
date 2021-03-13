@@ -27,7 +27,7 @@ mkdir -p "${DAPPNODE_CORE_DIR}/scripts"
 mkdir -p "${DAPPNODE_DIR}/config"
 
 PROFILE_BRANCH=${PROFILE_BRANCH:-"master"}
-PROFILE_URL="https://raw.githubusercontent.com/dappnode/DAppNode_Installer/${PROFILE_BRANCH}/build/scripts/.dappnode_profile"
+PROFILE_URL="https://raw.githubusercontent.com/mindcloud/DAppNode_Installer/${PROFILE_BRANCH}/build/scripts/.dappnode_profile"
 DAPPNODE_PROFILE="${DAPPNODE_CORE_DIR}/.dappnode_profile"
 WGET="wget -q --show-progress --progress=bar:force"
 SWGET="wget -q -O-"
@@ -65,9 +65,9 @@ source "${DAPPNODE_PROFILE}"
 # If such variable with 'dev:'' suffix is used, then the component is built from specified branch or commit.
 for comp in "${PKGS[@]}"; do
     ver="${comp}_VERSION"
-    eval "${comp}_URL=\"https://github.com/dappnode/DNP_${comp}/releases/download/v${!ver}/${comp,,}.dnp.dappnode.eth_${!ver}_linux-${ARCH}.txz\""
-    eval "${comp}_YML=\"https://github.com/dappnode/DNP_${comp}/releases/download/v${!ver}/docker-compose.yml\""
-    eval "${comp}_MANIFEST=\"https://github.com/dappnode/DNP_${comp}/releases/download/v${!ver}/dappnode_package.json\""
+    eval "${comp}_URL=\"https://github.com/minecloud/DNP_${comp}/releases/download/v${!ver}/${comp,,}.dnp.dappnode.eth_${!ver}_linux-${ARCH}.txz\""
+    eval "${comp}_YML=\"https://github.com/mindcloud/DNP_${comp}/releases/download/v${!ver}/docker-compose.yml\""
+    eval "${comp}_MANIFEST=\"https://github.com/mindcloud/DNP_${comp}/releases/download/v${!ver}/dappnode_package.json\""
     eval "${comp}_YML_FILE=\"${DAPPNODE_CORE_DIR}/docker-compose-${comp,,}.yml\""
     eval "${comp}_FILE=\"${DAPPNODE_CORE_DIR}/${comp,,}.dnp.dappnode.eth_${!ver}_linux-${ARCH}.txz\""
     eval "${comp}_MANIFEST_FILE=\"${DAPPNODE_CORE_DIR}/dappnode_package-${comp,,}.json\""
@@ -84,7 +84,7 @@ dappnode_core_build() {
             fi
             TMPDIR=$(mktemp -d)
             pushd $TMPDIR
-            git clone -b "${!ver##*:}" https://github.com/dappnode/DNP_${comp}
+            git clone -b "${!ver##*:}" https://github.com/mindcloud/DNP_${comp}
             # Change version in YAML to the custom one
             DOCKER_VER=$(echo "${!ver##*:}" | sed 's/\//_/g')
             sed -i "s~^\(\s*image\s*:\s*\).*~\1${comp,,}.dnp.dappnode.eth:${DOCKER_VER}~" DNP_${comp}/docker-compose.yml
@@ -128,12 +128,14 @@ dappnode_core_load() {
 customMotd() {
     if [ -f ${MOTD_FILE} ]; then
         cat <<EOF >${MOTD_FILE}
- ___   _             _  _         _
-|   \ /_\  _ __ _ __| \| |___  __| |___
-| |) / _ \| '_ \ '_ \ .  / _ \/ _  / -_)
-|___/_/ \_\ .__/ .__/_|\_\___/\__,_\___|
-          |_|  |_|
+__   ___      _     _ __  __ _            
+\ \ / (_) ___| | __| |  \/  (_)_ __   ___ 
+ \ V /| |/ _ \ |/ _` | |\/| | | '_ \ / _ \
+  | | | |  __/ | (_| | |  | | | | | |  __/
+  |_| |_|\___|_|\__,_|_|  |_|_|_| |_|\___|
+
 EOF
+
     fi
 }
 
@@ -158,24 +160,24 @@ addSwap() {
 }
 
 dappnode_start() {
-    echo -e "\e[32mDAppNode starting...\e[0m" 2>&1 | tee -a $LOGFILE
+    echo -e "\e[32mYieldMine starting...\e[0m" 2>&1 | tee -a $LOGFILE
     source "${DAPPNODE_PROFILE}" >/dev/null 2>&1
     docker-compose $DNCORE_YMLS up -d 2>&1 | tee -a $LOGFILE
-    echo -e "\e[32mDAppNode started\e[0m" 2>&1 | tee -a $LOGFILE
+    echo -e "\e[32mYieldMine started\e[0m" 2>&1 | tee -a $LOGFILE
 
     # Show credentials to the user on login
     USER=$(cat /etc/passwd | grep 1000 | cut -f 1 -d:)
     [ ! -z $USER ] && PROFILE=/home/$USER/.profile || PROFILE=/root/.profile
 
     if ! grep -q "${DAPPNODE_PROFILE}" "$PROFILE"; then
-        echo "########          DAPPNODE PROFILE          ########" >>$PROFILE
+        echo "########          YIELDMINE PROFILE          ########" >>$PROFILE
         echo -e "source ${DAPPNODE_PROFILE}\n" >>$PROFILE
     fi
 
     sed -i '/return/d' $DAPPNODE_PROFILE | tee -a $LOGFILE
 
     if ! grep -q 'http://my.dappnode/' "$DAPPNODE_PROFILE"; then
-        echo "echo -e \"\nTo get a VPN profile file and connect to your DAppNode, run the following command:\"" >>$DAPPNODE_PROFILE
+        echo "echo -e \"\nTo get a VPN profile file and connect to your YieldMine, run the following command:\"" >>$DAPPNODE_PROFILE
         echo "echo -e \"\n\e[32mdappnode_connect\e[0m\"" >>$DAPPNODE_PROFILE
         echo "echo -e \"\nOnce connected through the VPN (OpenVPN) you can access to the admin UI by following this link:\"" >>$DAPPNODE_PROFILE
         echo "echo -e \"\nhttp://my.dappnode/\n\"" >>$DAPPNODE_PROFILE
@@ -231,7 +233,7 @@ installExtra() {
 
 echo -e "\e[32m\n##############################################\e[0m" 2>&1 | tee -a $LOGFILE
 echo -e "\e[32m##############################################\e[0m" 2>&1 | tee -a $LOGFILE
-echo -e "\e[32m####          DAPPNODE INSTALLER          ####\e[0m" 2>&1 | tee -a $LOGFILE
+echo -e "\e[32m####          YIELDMINE INSTALLER         ####\e[0m" 2>&1 | tee -a $LOGFILE
 echo -e "\e[32m##############################################\e[0m" 2>&1 | tee -a $LOGFILE
 echo -e "\e[32m##############################################\e[0m" 2>&1 | tee -a $LOGFILE
 
@@ -255,17 +257,17 @@ if [ $ARCH == "amd64" ]; then
     installExtra
 fi
 
-echo -e "\e[32mBuilding DAppNode Core if needed...\e[0m" 2>&1 | tee -a $LOG_DIR
+echo -e "\e[32mBuilding YieldMine Core if needed...\e[0m" 2>&1 | tee -a $LOG_DIR
 dappnode_core_build
 
-echo -e "\e[32mDownloading DAppNode Core...\e[0m" 2>&1 | tee -a $LOGFILE
+echo -e "\e[32mDownloading YieldMine Core...\e[0m" 2>&1 | tee -a $LOGFILE
 dappnode_core_download
 
-echo -e "\e[32mLoading DAppNode Core...\e[0m" 2>&1 | tee -a $LOGFILE
+echo -e "\e[32mLoading YieldMine Core...\e[0m" 2>&1 | tee -a $LOGFILE
 dappnode_core_load
 
 if [ ! -f "/usr/src/dappnode/.firstboot" ]; then
-    echo -e "\e[32mDAppNode installed\e[0m" 2>&1 | tee -a $LOGFILE
+    echo -e "\e[32mYieldMine installed\e[0m" 2>&1 | tee -a $LOGFILE
     dappnode_start
 fi
 
