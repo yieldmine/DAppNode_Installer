@@ -1,10 +1,9 @@
-# DAppNode_Installer 
+# YieldMine_Installer 
 
 [![Website dappnode.io](https://img.shields.io/badge/Website-dappnode.io-brightgreen.svg)](https://dappnode.io/)
 [![Documentation Wiki](https://img.shields.io/badge/Documentation-Wiki-brightgreen.svg)](https://github.com/dappnode/DAppNode/wiki)
-[![GIVETH Campaign](https://img.shields.io/badge/GIVETH-Campaign-1e083c.svg)](https://beta.giveth.io/campaigns/5b44b198647f33526e67c262)
 [![ELEMENT DAppNode](https://img.shields.io/badge/ELEMENT-DAppNode-blue.svg)](https://app.element.io/#/room/#DAppNode:matrix.org)
-[![Twitter Follow](https://img.shields.io/twitter/follow/espadrine.svg?style=social&label=Follow)](https://twitter.com/DAppNODE?lang=es)
+[![Twitter Follow](https://img.shields.io/twitter/follow/espadrine.svg?style=social&label=Follow)](https://twitter.com/MineYield)
 
 This repository generates the .iso file for installing DappNode to a server. Below are the instructions that you will need to make your own DappNode ISO.
 
@@ -51,8 +50,8 @@ $ docker-compose up
 ### 2. Verify image generation
 When the execution of the Docker-compose finishes, run the following command to verify the image existance:
 ```
-$ ls -lrt images/DappNode-ubuntu-*
--rw-r--r--  1 edu  staff  916455424 20 mar 13:19 images/DAppNode-ubuntu-18.04-server-amd64.iso
+$ ls -lrt images/YieldMine-debian-*
+-rw-r--r--  1 edu  staff  916455424 20 mar 13:19 images/YieldMine-debian-***-amd64.iso
 ```
 
 ### 3. Burn the ISO into a USB

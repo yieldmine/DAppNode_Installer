@@ -10,16 +10,18 @@ CONTENT_HASH_PKGS=(geth openethereum nethermind)
 SWGET="wget -q -O-"
 WGET="wget"
 
+BASEREPO="yieldmine"
+
 components=(BIND IPFS VPN DAPPMANAGER WIFI)
 
 # The indirect variable expansion used in ${!ver##*:} allows us to use versions like 'dev:development'
 # If such variable with 'dev:'' suffix is used, then the component is built from specified branch or commit.
 for comp in "${components[@]}"; do
     ver="${comp}_VERSION"
-    echo "${comp}_URL=\"https://github.com/mindcloud/DNP_${comp}/releases/download/v${!ver}/${comp,,}.dnp.dappnode.eth_${!ver}_linux-amd64.txz\""
-    eval "${comp}_URL=\"https://github.com/mindcloud/DNP_${comp}/releases/download/v${!ver}/${comp,,}.dnp.dappnode.eth_${!ver}_linux-amd64.txz\""
-    eval "${comp}_YML=\"https://github.com/mindcloud/DNP_${comp}/releases/download/v${!ver}/docker-compose.yml\""
-    eval "${comp}_MANIFEST=\"https://github.com/mindcloud/DNP_${comp}/releases/download/v${!ver}/dappnode_package.json\""
+    echo "${comp}_URL=\"https://github.com/${BASEREPO}/DNP_${comp}/releases/download/v${!ver}/${comp,,}.dnp.dappnode.eth_${!ver}_linux-amd64.txz\""
+    eval "${comp}_URL=\"https://github.com/${BASEREPO}/DNP_${comp}/releases/download/v${!ver}/${comp,,}.dnp.dappnode.eth_${!ver}_linux-amd64.txz\""
+    eval "${comp}_YML=\"https://github.com/${BASEREPO}/DNP_${comp}/releases/download/v${!ver}/docker-compose.yml\""
+    eval "${comp}_MANIFEST=\"https://github.com/${BASEREPO}/DNP_${comp}/releases/download/v${!ver}/dappnode_package.json\""
     eval "${comp}_YML_FILE=\"${DAPPNODE_CORE_DIR}/docker-compose-${comp,,}.yml\""
     eval "${comp}_FILE=\"${DAPPNODE_CORE_DIR}/${comp,,}.dnp.dappnode.eth_${!ver##*:}_linux-amd64.txz\""
     eval "${comp}_MANIFEST_FILE=\"${DAPPNODE_CORE_DIR}/dappnode_package-${comp,,}.json\""
@@ -30,11 +32,11 @@ dappnode_core_download() {
         ver="${comp}_VERSION"
         echo "${ver}"
         if [[ ${!ver} != dev:* ]]; then
-            # Download DAppNode Core Images if it's needed
+            # Download YieldMine Core Images if it's needed
             eval "[ -f \$${comp}_FILE ] || $WGET -O \$${comp}_FILE \$${comp}_URL"
-            # Download DAppNode Core docker-compose yml files if it's needed
+            # Download YieldMine Core docker-compose yml files if it's needed
             eval "[ -f \$${comp}_YML_FILE ] || $WGET -O \$${comp}_YML_FILE \$${comp}_YML"
-            # Download DAppNode Core manifest files if it's needed
+            # Download YieldMine Core manifest files if it's needed
             eval "[ -f \$${comp}_MANIFEST_FILE ] || $WGET -O \$${comp}_MANIFEST_FILE \$${comp}_MANIFEST"
         fi
     done

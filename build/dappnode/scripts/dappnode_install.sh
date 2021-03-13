@@ -9,6 +9,7 @@ CONTENT_HASH_PKGS=(geth openethereum nethermind)
 CONTENT_HASH_FILE="${DAPPNODE_CORE_DIR}/packages-content-hash.csv"
 CRED_CMD="docker exec -i DAppNodeCore-vpn.dnp.dappnode.eth getAdminCredentials"
 ARCH=$(dpkg --print-architecture)
+BASEREPO="yieldmine"
 
 if [ "$UPDATE" = true ]; then
     echo "Cleaning for update..."
@@ -27,7 +28,7 @@ mkdir -p "${DAPPNODE_CORE_DIR}/scripts"
 mkdir -p "${DAPPNODE_DIR}/config"
 
 PROFILE_BRANCH=${PROFILE_BRANCH:-"master"}
-PROFILE_URL="https://raw.githubusercontent.com/mindcloud/DAppNode_Installer/${PROFILE_BRANCH}/build/scripts/.dappnode_profile"
+PROFILE_URL="https://raw.githubusercontent.com/${BASEREPO}/DAppNode_Installer/${PROFILE_BRANCH}/build/scripts/.dappnode_profile"
 DAPPNODE_PROFILE="${DAPPNODE_CORE_DIR}/.dappnode_profile"
 WGET="wget -q --show-progress --progress=bar:force"
 SWGET="wget -q -O-"
@@ -65,9 +66,9 @@ source "${DAPPNODE_PROFILE}"
 # If such variable with 'dev:'' suffix is used, then the component is built from specified branch or commit.
 for comp in "${PKGS[@]}"; do
     ver="${comp}_VERSION"
-    eval "${comp}_URL=\"https://github.com/minecloud/DNP_${comp}/releases/download/v${!ver}/${comp,,}.dnp.dappnode.eth_${!ver}_linux-${ARCH}.txz\""
-    eval "${comp}_YML=\"https://github.com/mindcloud/DNP_${comp}/releases/download/v${!ver}/docker-compose.yml\""
-    eval "${comp}_MANIFEST=\"https://github.com/mindcloud/DNP_${comp}/releases/download/v${!ver}/dappnode_package.json\""
+    eval "${comp}_URL=\"https://github.com/${BASEREPO}/DNP_${comp}/releases/download/v${!ver}/${comp,,}.dnp.dappnode.eth_${!ver}_linux-${ARCH}.txz\""
+    eval "${comp}_YML=\"https://github.com/${BASEREPO}/DNP_${comp}/releases/download/v${!ver}/docker-compose.yml\""
+    eval "${comp}_MANIFEST=\"https://github.com/${BASEREPO}/DNP_${comp}/releases/download/v${!ver}/dappnode_package.json\""
     eval "${comp}_YML_FILE=\"${DAPPNODE_CORE_DIR}/docker-compose-${comp,,}.yml\""
     eval "${comp}_FILE=\"${DAPPNODE_CORE_DIR}/${comp,,}.dnp.dappnode.eth_${!ver}_linux-${ARCH}.txz\""
     eval "${comp}_MANIFEST_FILE=\"${DAPPNODE_CORE_DIR}/dappnode_package-${comp,,}.json\""
@@ -84,7 +85,7 @@ dappnode_core_build() {
             fi
             TMPDIR=$(mktemp -d)
             pushd $TMPDIR
-            git clone -b "${!ver##*:}" https://github.com/mindcloud/DNP_${comp}
+            git clone -b "${!ver##*:}" https://github.com/${BASEREPO}/DNP_${comp}
             # Change version in YAML to the custom one
             DOCKER_VER=$(echo "${!ver##*:}" | sed 's/\//_/g')
             sed -i "s~^\(\s*image\s*:\s*\).*~\1${comp,,}.dnp.dappnode.eth:${DOCKER_VER}~" DNP_${comp}/docker-compose.yml

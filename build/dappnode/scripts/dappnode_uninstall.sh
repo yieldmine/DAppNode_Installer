@@ -29,10 +29,10 @@ uninstall() {
     sed -i '/########          DAPPNODE PROFILE          ########/g' $PROFILE
     sed -i '/.*dappnode_profile/g' $PROFILE
 
-    echo "DAppNode uninstalled!"
+    echo "YieldMine uninstalled!"
 }
 
-read -r -p "WARNING: This script will uninstall and delete all DAppNode
+read -r -p "WARNING: This script will uninstall and delete all YieldMine
 containers and volumes. Are You Sure? [Y/n] " input <&2
 
 case $input in

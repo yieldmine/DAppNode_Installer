@@ -8,7 +8,7 @@ error_exit() {
     exit 1
 }
 SERIAL=$(dmidecode -s system-serial-number)
-echo "DAppNode Installation Test"
+echo "YieldMine Installation Test"
 date
 echo "Serial: ${SERIAL}"
 echo "################################"
